@@ -1,0 +1,38 @@
+{
+  "name": "picpay-desafio-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "tsc:init": "tsc --init",
+    "test:unit": "vitest run --dir test/unit",
+    "test:integration": "vitest run --dir test/integration",
+    "test:watch": "vitest --dir test",
+    "test:ui": "vitest --dir test --ui",
+    "test:coverage": "vitest run --dir test --coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.1.1",
+    "@vitest/coverage-v8": "^0.34.2",
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.21.0",
+    "typescript": "^5.1.6",
+    "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.1.1",
+    "tsx": "^3.12.7",
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^0.34.2"
+  }
+}

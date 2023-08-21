@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  picpay-desafio:
+    image: bitnami/postgresql
+    ports:
+      - 5436:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=picpay-desafio
