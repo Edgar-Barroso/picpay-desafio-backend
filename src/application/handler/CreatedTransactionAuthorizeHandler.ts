@@ -12,7 +12,6 @@ export default class CreatedTransactionAuthorizeHandler implements Handler {
   name = "CreatedTransaction";
 
   constructor(readonly authorizationService: AuthorizationService,readonly transactionsRepository:TransactionRepository,readonly broker:Broker) {}
-
   async handle(event: CreatedTransaction) {
     const isAuthorized = await this.authorizationService.validate({id:event.transaction.getId()});
     if (isAuthorized) {

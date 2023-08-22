@@ -24,8 +24,6 @@ export default class TransactionService{
     }
 
     cancel(date: Date) {
-        console.log("3")
-
         if(this.transaction.getExecutedAt()) throw new TransactionError("Transaction already executed")
         if(this.transaction.getCanceledAt()) throw new TransactionError("Transaction already canceled")
         const {payer,value} = this.transaction
