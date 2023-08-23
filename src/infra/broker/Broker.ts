@@ -6,7 +6,6 @@ export default class Broker {
     constructor() {
         this.handlers = [];
     }
-
     register(handler: Handler) {
         this.handlers.push(handler);
     }

@@ -6,6 +6,5 @@ import tsConfigPaths from 'vite-tsconfig-paths'
       //@ts-ignore
       test:{
           globals:true,
-          environmentMatchGlobs:[["test/e2e/**","prisma"]]
       }
   })

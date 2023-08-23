@@ -5,7 +5,6 @@ import User from "@/domain/entity/User";
 import Password from "@/domain/valueObject/Password";
 
 export default class PrismaTransactionRepository implements TransactionRepository{
-
     private async findUserById(id:string):Promise<User | undefined>{
         const userData = await prisma.user.findUnique({where:{id}})
         if (!userData) return undefined

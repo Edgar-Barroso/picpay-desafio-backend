@@ -4,6 +4,7 @@ import prisma from "./Prisma";
 import Password from "@/domain/valueObject/Password";
 
 export default class PrismaUserRepository implements UserRepository{
+
     async findById(id: string): Promise<User | undefined> {
         const userData = await prisma.user.findUnique({where:{id}})
         if (!userData) return undefined
@@ -36,9 +37,6 @@ export default class PrismaUserRepository implements UserRepository{
             id:user.getId()
         }})
         return user
-    }
-    async clear(): Promise<void> {
-        await prisma.user.deleteMany()
     }
 
 }

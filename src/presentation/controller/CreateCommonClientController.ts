@@ -7,7 +7,6 @@ import Broker from "@/infra/broker/Broker"
 import CreateCommonClientInput from "@/application/usecase/createCommonClient/CreateCommonClientInput"
 import RepositoryFactory from "@/domain/factory/RepositoryFactory"
 
-
 export default class CreateCommonClientController implements Controller{
     userRepository:UserRepository
     
@@ -16,9 +15,9 @@ export default class CreateCommonClientController implements Controller{
     }
 
     async execute(httpRequest:HttpRequest):Promise<HttpResponse>{
+
         const createUser = new CreateCommonClient(this.userRepository)
-        const {name,cpf,email,password} = httpRequest.body
-        const input = new CreateCommonClientInput(name,cpf,email,password)
+        const input:CreateCommonClientInput = httpRequest.body
         await createUser.execute(input)
         return {statusCode:201}
         }

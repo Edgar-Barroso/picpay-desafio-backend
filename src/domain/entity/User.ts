@@ -1,12 +1,13 @@
 import Cpf from "../valueObject/Cpf";
 import Decimal from "../valueObject/Decimal";
 import Email from "../valueObject/Email";
+import Name from "../valueObject/Name";
 import Password from "../valueObject/Password";
 import UniqueEntityId from "../valueObject/UniqueEntityId";
 
 export default class User {
     private id:UniqueEntityId;
-    private name: string;
+    private name: Name;
     private cpf: Cpf;
     private email: Email;
     private password: Password;
@@ -15,7 +16,7 @@ export default class User {
 
     constructor(name: string, cpf:string, email: string, password: string,balance?:number,createdAt?:Date,id?:string) {
         this.id = new UniqueEntityId(id)
-        this.name = name;
+        this.name = new Name(name);
         this.cpf = new Cpf(cpf)
         this.email = new Email(email);
         this.password = new Password(password);
@@ -36,7 +37,7 @@ export default class User {
     }
 
     getName() {
-        return this.name;
+        return this.name.getValue();
     }
 
     getCpf() {

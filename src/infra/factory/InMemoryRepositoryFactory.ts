@@ -5,11 +5,19 @@ import InMemoryUserRepository from "../repository/inMemory/InMemoryUserRepositor
 import InMemoryTransactionRepository from "../repository/inMemory/InMemoryTransactionRepository";
 
 export default class InMemoryRepositoryFactory implements DatabaseRepositoryFactory{
-    createUserRepository(): UserRepository {
-        return new InMemoryUserRepository()
+    private userRepository:InMemoryUserRepository | undefined
+    private transactionepository:InMemoryTransactionRepository | undefined
+    constructor(readonly isSingleton?:boolean){
     }
-    createTransactionRepository(): TransactionRepository {
-        return new InMemoryTransactionRepository()
 
+    createUserRepository(): InMemoryUserRepository {
+        if(!this.isSingleton) return new InMemoryUserRepository()
+        if(!this.userRepository) this.userRepository = new InMemoryUserRepository()
+        return this.userRepository
+    }
+    createTransactionRepository(): InMemoryTransactionRepository {
+        if(!this.isSingleton) return new InMemoryTransactionRepository()
+        if(!this.transactionepository) this.transactionepository = new InMemoryTransactionRepository()
+        return this.transactionepository
     }
 }

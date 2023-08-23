@@ -3,6 +3,7 @@ import TransactionRepository from "@/domain/repository/TransactionRepository";
 
 export default class InMemoryTransactionRepository implements TransactionRepository{
     items:Transaction[]
+    
     constructor(){
         this.items = []
     }

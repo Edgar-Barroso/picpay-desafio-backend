@@ -16,6 +16,6 @@ const broker = new Broker()
 broker.register(new CanceledTransactionNotifyHandler(new MockNotificationService()))
 broker.register(new AuthorizedTransactionNotifyHandler(new MockNotificationService()))
 broker.register(new CreatedTransactionAuthorizeHandler(new MockAuthorizationService(),repositoryFactory.createTransactionRepository(),broker))
-new RouteConfig(app,repositoryFactory,broker)
+new RouteConfig(app,repositoryFactory,errorHandler,broker)
 
 export default app

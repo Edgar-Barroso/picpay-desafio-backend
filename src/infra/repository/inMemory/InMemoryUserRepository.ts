@@ -6,6 +6,7 @@ export default class InMemoryUserRepository implements UserRepository{
     constructor(){
         this.items = []
     }
+
     async findById(id: string): Promise<User | undefined> {
         return this.items.find(item=>item.getId()===id)
     }
@@ -21,6 +22,4 @@ export default class InMemoryUserRepository implements UserRepository{
         this.items.push(user)
         return user
     }
-
-
 }

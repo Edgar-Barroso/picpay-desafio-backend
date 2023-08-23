@@ -15,7 +15,6 @@ export default class CreateTransaction {
     ) {}
 
     async execute(input: CreateTransactionInput): Promise<void> {
-
         const payer = await this.userRepository.findById(input.payerId);
         const payee = await this.userRepository.findById(input.payeeId);
         if (!payer || !payee) throw new UserNotFoundError();

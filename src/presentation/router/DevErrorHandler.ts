@@ -4,6 +4,8 @@ import HttpResponse from "../core/HttpResponse";
 export default class DevErrorHandler implements ErrorHandler {
     errorMappings: { [key: string]: { statusCode: number} } = {
         ValidationError: { statusCode: 422},
+        ZodError: { statusCode: 400},
+
     };
 
     execute(error: Error): HttpResponse {
