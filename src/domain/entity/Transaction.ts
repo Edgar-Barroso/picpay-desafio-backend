@@ -1,4 +1,4 @@
-import TransactionError from "../error/InvalidTransactionError";
+import TransactionError from "../error/TransactionError";
 import UniqueEntityId from "../valueObject/UniqueEntityId";
 import Storekeeper from "./Storekeeper";
 import User from "./User";

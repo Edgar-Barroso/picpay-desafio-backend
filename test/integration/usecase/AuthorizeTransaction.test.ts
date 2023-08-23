@@ -42,17 +42,17 @@ test("Deve authorizar uma transação pendente",async ()=>{
 test("Deve authorizar uma transação ja executada",async ()=>{
     const input = new AuthorizeTransactionInput(transaction.getId())
     transactionService.approve(new Date())
-    expect(async ()=>await sut.execute(input)).rejects.toBeInstanceOf(TransactionError)
+    expect(async ()=>await sut.execute(input)).rejects.toThrowError(TransactionError)
 })
 
 test("Deve authorizar uma transação ja cancelada",async ()=>{
     const input = new AuthorizeTransactionInput(transaction.getId())
     transactionService.cancel(new Date())
-    expect(async ()=>await sut.execute(input)).rejects.toBeInstanceOf(TransactionError)
+    expect(async ()=>await sut.execute(input)).rejects.toThrowError(TransactionError)
 })
 
 
 test("Deve falhar ao tentar authorizar uma transação que não existe",async ()=>{
     const input = new AuthorizeTransactionInput("notExistId")
-    expect(async ()=>await sut.execute(input)).rejects.toBeInstanceOf(TransactionNotFoundError)
+    expect(async ()=>await sut.execute(input)).rejects.toThrowError(TransactionNotFoundError)
 })

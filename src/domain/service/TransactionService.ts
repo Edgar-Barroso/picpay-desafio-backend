@@ -1,5 +1,5 @@
 import Transaction from "../entity/Transaction";
-import TransactionError from "../error/InvalidTransactionError";
+import TransactionError from "../error/TransactionError";
 
 export default class TransactionService{
 

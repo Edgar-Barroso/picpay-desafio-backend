@@ -1,112 +1,78 @@
+import AuthorizedTransactionNotifyHandler from "@/application/handler/AuthorizedTransactionNotifyHandler"
+import CanceledTransactionNotifyHandler from "@/application/handler/CanceledTransactionNotifyHandler"
+import CreatedTransactionAuthorizeHandler from "@/application/handler/CreatedTransactionAuthorizeHandler"
 import Broker from "@/infra/broker/Broker"
-import InMemoryRepositoryFactory from "@/infra/factory/InMemoryRepositoryFactory"
 import PrismaRepositoryFactory from "@/infra/factory/PrismaRepositoryFactory"
-import CreateStorekeeperController from "@/presentation/controller/CreateStorekeeperController"
-import HttpRequest from "@/presentation/core/HttpRequest"
+import MockAuthorizationService from "@/infra/service/mock/MockAuthorizationService"
+import MockNotificationService from "@/infra/service/mock/MockNotificationService"
+import DevErrorHandler from "@/presentation/router/DevErrorHandler"
+import FastifyAdapter from "@/presentation/router/FastifyAdapter"
+import RouteConfig from "@/presentation/router/RouteConfig"
+import request from "supertest"
 
 
-let sut:CreateStorekeeperController
-beforeEach(async ()=>{
-    const broker = new Broker()
-    const repositoryFactory = new InMemoryRepositoryFactory(true)
-    sut = new CreateStorekeeperController(repositoryFactory,broker)
+const errorHandler = new DevErrorHandler()
+const app = new FastifyAdapter(errorHandler)
+const repositoryFactory = new PrismaRepositoryFactory()
+const broker = new Broker()
+broker.register(new CanceledTransactionNotifyHandler(new MockNotificationService()))
+broker.register(new AuthorizedTransactionNotifyHandler(new MockNotificationService()))
+broker.register(new CreatedTransactionAuthorizeHandler(new MockAuthorizationService(),repositoryFactory.createTransactionRepository(),broker))
+new RouteConfig(app,repositoryFactory,errorHandler,broker)
+
+
+beforeAll(async ()=>{
+    app.ready()
+})
+
+afterAll(async ()=>{
+    app.ready()
 })
 
 test("deve criar um usuário comum com sucesso",async ()=>{
-    const httpRequest:HttpRequest = {
-        body:{
-            name:"Jose Edgar Barroso",
-            cpf:"629.925.773-32",
-            email:"jose@test.com",
-            password:"123456"
-        }
-    }
-    const response = await sut.execute(httpRequest)
+    const response = await request(app.server)
+        .post('/storekeeper')
+        .send({
+            name :"Jose Edgar Barroso Neto",
+            cpf :"629.925.773-32",
+            email :"joseedgar@test.com",
+            password :"123456"
+        })
     expect(response.statusCode).toBe(201)
 })
 
-
-test("deve falhar ao tentar cadastrar um usuário faltando parametros (name)",async ()=>{
-    const httpRequest:HttpRequest = {
-        body:{
-            cpf:"629.925.773-32",
-            email:"jose@test.com",
-            password:"123456"
-        }
-    }
-    expect(async ()=> await sut.execute(httpRequest)).rejects.toBeInstanceOf(Error)
-    
+test("deve receber uma status 400 ao tentar criar um usuário com cpf inválido",async ()=>{
+    const response = await request(app.server)
+        .post('/storekeeper')
+        .send({
+            name :"Jose Edgar Barroso Neto",
+            cpf :"629.925.773-02",
+            email :"joseedgar@test.com",
+            password :"123456"
+        })
+        expect(response.statusCode).toBe(400)
 })
 
-
-test("deve falhar ao tentar cadastrar um usuário faltando parametros (cpf)",async ()=>{
-    const httpRequest:HttpRequest = {
-        body:{
-            name:"Jose Edgar Barroso",
-            email:"jose@test.com",
-            password:"123456"
-        }
-    }
-    expect(async ()=> await sut.execute(httpRequest)).rejects.toBeInstanceOf(Error)
-    
+test("deve receber uma status 400 ao tentar criar um usuário com email inválido",async ()=>{
+    const response = await request(app.server)
+        .post('/storekeeper')
+        .send({
+            name :"Jose Edgar Barroso Neto",
+            cpf :"629.925.773-32",
+            email :"joseedgar@.com",
+            password :"123456"
+        })
+        expect(response.statusCode).toBe(400)
 })
 
-test("deve falhar ao tentar cadastrar um usuário faltando parametros (email)",async ()=>{
-    const httpRequest:HttpRequest = {
-        body:{
-            name:"Jose Edgar Barroso",
-            email:"jose@test.com",
-            password:"123456"
-        }
-    }
-    expect(async ()=> await sut.execute(httpRequest)).rejects.toBeInstanceOf(Error)
-    
-})
-
-test("deve falhar ao tentar cadastrar um usuário faltando parametros (password)",async ()=>{
-    const httpRequest:HttpRequest = {
-        body:{
-            name:"Jose Edgar Barroso",
-            cpf:"629.925.773-32",
-            email:"jose@test.com",
-        }
-    }
-    expect(async ()=> await sut.execute(httpRequest)).rejects.toBeInstanceOf(Error)
-    
-})
-
-test("deve falhar ao tentar cadastrar um usuário com cpf inválido",async ()=>{
-    const httpRequest:HttpRequest = {
-        body:{
-            name:"Jose Edgar Barroso Neto",
-            cpf:"INVALID_CPF",
-            email:"jose@test.com",
-            password:"123456"
-        }
-    }
-    expect(async ()=> await sut.execute(httpRequest)).rejects.toBeInstanceOf(Error)
-})
-
-test("deve falhar ao tentar cadastrar um usuário com email inválido",async ()=>{
-    const httpRequest:HttpRequest = {
-        body:{
-            name:"Jose Edgar Barroso Neto",
-            cpf:"629.925.773-32",
-            email:"INVALID_EMAIL",
-            password:"123456"
-        }
-    }
-    expect(async ()=> await sut.execute(httpRequest)).rejects.toBeInstanceOf(Error)
-})
-
-test("deve falhar ao tentar cadastrar um usuário com password inválido",async ()=>{
-    const httpRequest:HttpRequest = {
-        body:{
-            name:"Jose Edgar Barroso Neto",
-            cpf:"629.925.773-32",
-            email:"jose@test.com",
-            password:"INVALID PASSWORD"
-        }
-    }
-    expect(async ()=> await sut.execute(httpRequest)).rejects.toBeInstanceOf(Error)
+test("deve receber uma status 400 ao tentar criar um usuário com senha inválida",async ()=>{
+    const response = await request(app.server)
+        .post('/storekeeper')
+        .send({
+            name :"Jose Edgar Barroso Neto",
+            cpf :"629.925.773-32",
+            email :"joseedgar@test.com",
+            password :"123"
+        })
+        expect(response.statusCode).toBe(400)
 })

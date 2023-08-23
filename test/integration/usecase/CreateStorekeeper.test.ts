@@ -1,4 +1,4 @@
-import UserAlreadExistsError from "@/application/error/UserAlreadExistsError";
+import UserAlreadyExistsError from "@/application/error/UserAlreadExistsError";
 import CreateStorekeeper from "@/application/usecase/createStorekeeper/CreateStorekeeper";
 import CreateStorekeeperInput from "@/application/usecase/createStorekeeper/CreateStorekeeperInput";
 import InMemoryUserRepository from "@/infra/repository/inMemory/InMemoryUserRepository";
@@ -37,7 +37,7 @@ test("Deve falhar ao tentar criar um usuário com cpf repetido", async () => {
     );
     await sut.execute(input1);
     expect(async () => await sut.execute(input2)).rejects.toThrowError(
-        UserAlreadExistsError
+        UserAlreadyExistsError
     );
 });
 
@@ -56,6 +56,6 @@ test("Deve falhar ao tentar criar um usuário com email repetido", async () => {
     );
     await sut.execute(input1);
     expect(async () => await sut.execute(input2)).rejects.toThrowError(
-        UserAlreadExistsError
+        UserAlreadyExistsError
     );
 });

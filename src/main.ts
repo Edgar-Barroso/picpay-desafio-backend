@@ -3,7 +3,9 @@ import CanceledTransactionNotifyHandler from "./application/handler/CanceledTran
 import CreatedTransactionAuthorizeHandler from "./application/handler/CreatedTransactionAuthorizeHandler";
 import Broker from "./infra/broker/Broker";
 import PrismaRepositoryFactory from "./infra/factory/PrismaRepositoryFactory";
-import MockAuthorizationService from "./infra/service/mock/MockAuthorizationService";
+import HttpAuthorizationService from "./infra/service/http/HttpAuthorizationService";
+import MockAuthorizationService from "./infra/service/http/HttpAuthorizationService";
+import HttpNotificationService from "./infra/service/http/HttpNotificationService";
 import MockNotificationService from "./infra/service/mock/MockNotificationService";
 import DevErrorHandler from "./presentation/router/DevErrorHandler";
 import FastifyAdapter from "./presentation/router/FastifyAdapter";
@@ -13,9 +15,9 @@ const errorHandler = new DevErrorHandler()
 const app = new FastifyAdapter(errorHandler)
 const repositoryFactory = new PrismaRepositoryFactory()
 const broker = new Broker()
-broker.register(new CanceledTransactionNotifyHandler(new MockNotificationService()))
-broker.register(new AuthorizedTransactionNotifyHandler(new MockNotificationService()))
-broker.register(new CreatedTransactionAuthorizeHandler(new MockAuthorizationService(),repositoryFactory.createTransactionRepository(),broker))
+broker.register(new CanceledTransactionNotifyHandler(new HttpNotificationService()))
+broker.register(new AuthorizedTransactionNotifyHandler(new HttpNotificationService()))
+broker.register(new CreatedTransactionAuthorizeHandler(new HttpAuthorizationService(),repositoryFactory.createTransactionRepository(),broker))
 new RouteConfig(app,repositoryFactory,errorHandler,broker)
 
 export default app
