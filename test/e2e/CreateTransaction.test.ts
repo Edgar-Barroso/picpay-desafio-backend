@@ -46,6 +46,16 @@ test("deve criar realizar uma transação",async ()=>{
             payer:user1.getId(),
             payee:user2.getId()
         })
-    
-    
+})
+
+
+test("deve falhar ao tentar realizar uma transação inválida",async ()=>{
+    const response = await request(app.server)
+        .post('/transaction')
+        .send({
+            value:100,
+            payer:user2.getId(),
+            payee:user1.getId()
+        })
+        expect(response.statusCode).toBe(422)
 })

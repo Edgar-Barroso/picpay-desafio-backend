@@ -3,7 +3,7 @@ import AuthorizeTransactionInput from "@/application/usecase/authorizeTransactio
 import AuthorizeTransaction from "@/application/usecase/authorizeTransaction/AuthorizeTransation";
 import CommonClient from "@/domain/entity/CommonClient";
 import Transaction from "@/domain/entity/Transaction";
-import TransactionError from "@/domain/error/InvalidTransactionError";
+import TransactionError from "@/domain/error/TransactionError";
 import TransactionService from "@/domain/service/TransactionService";
 import Broker from "@/infra/broker/Broker";
 import InMemoryTransactionRepository from "@/infra/repository/inMemory/InMemoryTransactionRepository";

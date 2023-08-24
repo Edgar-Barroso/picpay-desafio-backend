@@ -4,7 +4,7 @@ import CreateTransaction from "@/application/usecase/createTransaction/CreateTra
 import CreateTransactionInput from "@/application/usecase/createTransaction/CreateTransactionInput";
 import CommonClient from "@/domain/entity/CommonClient";
 import Storekeeper from "@/domain/entity/Storekeeper";
-import TransactionError from "@/domain/error/InvalidTransactionError";
+import TransactionError from "@/domain/error/TransactionError";
 import Broker from "@/infra/broker/Broker";
 import InMemoryTransactionRepository from "@/infra/repository/inMemory/InMemoryTransactionRepository";
 import InMemoryUserRepository from "@/infra/repository/inMemory/InMemoryUserRepository";
