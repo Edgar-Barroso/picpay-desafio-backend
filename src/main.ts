@@ -4,9 +4,7 @@ import CreatedTransactionAuthorizeHandler from "./application/handler/CreatedTra
 import Broker from "./infra/broker/Broker";
 import PrismaRepositoryFactory from "./infra/factory/PrismaRepositoryFactory";
 import HttpAuthorizationService from "./infra/service/http/HttpAuthorizationService";
-import MockAuthorizationService from "./infra/service/http/HttpAuthorizationService";
 import HttpNotificationService from "./infra/service/http/HttpNotificationService";
-import MockNotificationService from "./infra/service/mock/MockNotificationService";
 import DevErrorHandler from "./presentation/router/DevErrorHandler";
 import FastifyAdapter from "./presentation/router/FastifyAdapter";
 import RouteConfig from "./presentation/router/RouteConfig";
