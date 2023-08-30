@@ -80,7 +80,7 @@ test("deve falhar ao tentar realizar uma transação inválida", async () => {
 
 test("deve criar realizar uma sequencia de transações", async () => {
   for (let i = 0; i < 10; i++) {
-    await request(app.server).post("/transaction").send({
+    request(app.server).post("/transaction").send({
       value: 100,
       payer: user1.getId(),
       payee: user2.getId(),
